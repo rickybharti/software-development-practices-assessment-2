@@ -1,0 +1,164 @@
+GIT COMMAND DOCUMENTATION
+Project: software-development-practices-assessment-2
+Run commands from the project folder unless stated otherwise.
+Repeated command invocations are retained when they perform distinct workflow steps.
+
+A. Local workflow and verification
+
+01. git init -b main
+    Initialize the local repository with main as the initial branch, before creating any GitHub repository.
+
+02. git config user.name 'Ricky Bharti'
+    Set the author name for this repository only.
+
+03. git config user.email 105605880+rickybharti@users.noreply.github.com
+    Use the GitHub noreply email for this repository; global settings remain unchanged.
+
+04. git add index.html about.html styles.css
+    Stage the two initial HTML pages and their shared stylesheet.
+
+05. git commit -m 'Add initial home and about pages'
+    Record the initial state of the project as the first commit.
+
+06. git status --short --branch
+    Display the current branch and any uncommitted changes.
+
+07. git diff -- index.html
+    Inspect the home-page change before staging it.
+
+08. git add index.html
+    Stage the updated home page.
+
+09. git commit -m 'Add learning goals to the home page'
+    Record the second commit, which modifies an existing HTML file.
+
+10. git branch feature
+    Create a branch named feature at the current commit.
+
+11. git switch feature
+    Switch from main to the new feature branch.
+
+12. git add about.html
+    Stage the workflow section added on the feature branch.
+
+13. git commit -m 'Add workflow section on feature branch'
+    Record the feature change on the feature branch.
+
+14. git switch main
+    Return to main before merging the feature.
+
+15. git merge --no-ff feature -m 'Merge feature branch into main'
+    Merge feature into main and create an explicit merge commit, preserving visible branch activity.
+
+16. git log --graph --oneline --decorate --all
+    Display the commit graph, short commit IDs and branch labels for all local branches.
+
+17. git check-ignore -v debug.log temp/notes.txt
+    Show which .gitignore rules exclude the sample log and temporary file.
+
+18. git status --short --ignored
+    Show ignored files with !! and the untracked .gitignore with ??.
+
+19. git add .gitignore
+    Stage the ignore rules without staging the ignored sample files.
+
+20. git commit -m 'Ignore log files and temporary folder'
+    Save the .gitignore rules in the repository history.
+
+21. git add index.html
+    Stage the temporary announcement used to demonstrate undo.
+
+22. git commit -m 'Add temporary announcement for undo demonstration'
+    Create an additional commit that will be undone immediately.
+
+23. git show --stat --oneline HEAD
+    Show the last commit before undoing it.
+
+24. git show HEAD -- index.html
+    Show the exact line introduced by the additional commit.
+
+25. git revert --no-edit HEAD
+    Undo the latest commit with a new inverse commit, retaining both operations in history.
+
+26. git diff 'HEAD~2' HEAD -- index.html
+    Compare the restored page with the version before the temporary commit; empty output proves equality.
+
+27. git show --format=fuller --stat HEAD
+    Inspect the new revert commit and its deletion of the temporary line.
+
+28. git status
+    Verify that the tracked working tree is clean after the revert.
+
+29. git remote add origin https://github.com/rickybharti/software-development-practices-assessment-2.git
+    Configure the planned GitHub URL as origin locally; this command does not create or publish a remote repository.
+
+30. git remote -v
+    List the fetch and push URLs configured for origin.
+
+31. git add README.md git_commands.txt
+    Stage the repository guide and this command documentation.
+
+32. git commit -m 'Document Git workflow commands'
+    Commit the complete command documentation and repository guide.
+
+33. git log --graph --oneline --decorate --all
+    Inspect the final local history, including the merge and revert.
+
+34. git rev-parse main feature
+    Print the exact commit IDs of both branch tips for publication approval and later remote verification.
+
+35. git ls-files
+    List tracked files and verify that ignored examples are absent.
+
+36. git diff --check
+    Check unstaged changes for whitespace errors.
+
+37. git status --porcelain=v1
+    Verify a clean tracked working tree; clean output is empty.
+
+38. git rev-list --count main
+    Count all commits reachable from main, including the feature commit.
+
+39. git log --reverse --topo-order '--format=%H|%P|%s' --all
+    Export full commit IDs, parents and subjects for the report and structural checks.
+
+40. git show main:index.html
+    Read the committed home page to confirm that the temporary announcement was reverted.
+
+41. git show main:about.html
+    Read the committed about page to confirm that the feature was merged.
+
+42. git ls-files --others --ignored --exclude-standard
+    List local ignored examples independently of the tracked-file list.
+
+B. Publication procedure (requires explicit approval)
+The PDF report records whether publication has been completed.
+
+git push --atomic -u origin main feature
+    After explicit approval, publish both branches in one atomic push and set upstream tracking.
+
+git ls-remote --heads origin main feature
+    After publication, verify that both remote branch tips match the approved local commits.
+
+git status --short --branch
+    After publication, confirm branch tracking and working-tree status.
+
+C. Supporting shell / GitHub CLI commands (not Git commands)
+mkdir software-development-practices-assessment-2
+    Create the local project folder (performed through the local file API).
+cd software-development-practices-assessment-2
+    Set the working directory for the Git commands (set by the local command runner).
+gh repo create rickybharti/software-development-practices-assessment-2 --public
+    After approval, create an empty public GitHub repository without a README or initial commit.
+
+D. Environment inspection (outside the project)
+git --version
+    Check the installed Git version.
+git config --global --get user.name
+    Read the existing global author name.
+git config --global --get user.email
+    Read the existing global author email; the project uses a noreply email instead.
+
+References: https://git-scm.com/docs/git-merge
+https://git-scm.com/docs/git-revert
+https://git-scm.com/docs/gitignore
